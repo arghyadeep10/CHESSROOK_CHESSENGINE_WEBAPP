@@ -1,0 +1,91 @@
+{% extends 'chessrook/base.html' %}
+{% load static %}
+
+{% block title %}
+    Profile
+{% endblock title %}
+
+{% block content %}
+
+    <style>
+        .profile{
+            width: 85%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .profile-header{
+            width: 85%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .list-group{
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .list-group-item{
+            display: flex;
+        }
+
+        .input-group-text{
+            width: 30%;
+            margin-right: 0%;
+        }
+
+        .main-detail{
+            background-color:beige;
+            width: 65%;
+            border-radius: 5px;
+            text-align: left;
+            padding-top: 7px;  
+            margin-left: 5px; 
+            padding-left: 10px;         
+        }
+
+        @media only screen and (max-width:500px){
+            .input-group-text{
+                width: 45%;
+                margin-right: 0%;
+            }
+
+            .main-detail{
+                background-color:beige;
+                width: 55%;
+                border-radius: 5px;
+                text-align: left;
+                padding-top: 7px;  
+                margin-left: 5px; 
+                padding-left: 10px;         
+            }
+        }
+
+        .profile-edit-btn{
+            margin-top: 20px;
+        }
+
+    </style>
+
+    <h1 class="profile-header">Profile</h1>
+
+    <div class="profile" id="profile-id">
+        <div class="card">
+            <h5 class="card-header">Details</h5>
+            <div class="card-body">
+            
+                <ul class="list-group">
+                    <li class="list-group-item"><span class="input-group-text" id="basic-addon1">Username</span>  <div class="main-detail">{{ user.username }}</div> </li>
+                    <li class="list-group-item"><span class="input-group-text" id="basic-addon1">Email</span>  <div class="main-detail">{{ user.email }}</div> </li>
+                    <li class="list-group-item"><span class="input-group-text" id="basic-addon1">First Name</span>  <div class="main-detail">{{ user.first_name }}</div> </li>
+                    <li class="list-group-item"><span class="input-group-text" id="basic-addon1">Last Name</span>  <div class="main-detail">{{ user.last_name }}</div> </li>
+                </ul>
+            
+                
+            <a href="{% url 'profile_update' %}" class="btn btn-dark profile-edit-btn" id="profile-edit-btn-id">Edit</a>
+            </div>
+        </div>            
+    </div>
+
+{% endblock content %}

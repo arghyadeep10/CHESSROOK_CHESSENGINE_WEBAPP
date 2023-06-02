@@ -1,0 +1,13 @@
+{% extends 'chessrook/base.html' %}
+{% load static %}
+
+{% block title %}
+    Logout
+{% endblock title %}
+
+{% block content %}
+    <div class="alert alert-secondary" role="alert">
+            You are now Logget Out. Visit again. <a href="{% url 'login' %}" class="link-dark">Sign In</a>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,472 @@
+@media only screen and (max-width:1000px){
+    /* So when screen width is <= 1000 px the below CSS code will be followed */
+    .screen-master{
+        width: 100%;
+        height: 100%;
+    }
+
+    .board-master{
+        width: 100%;
+    }
+
+    .instrumentation-cluster{
+        margin-top: 5px;
+    }
+}
+
+@media only screen and (min-width:1001px){
+    /* So when screen width is >= 1001 px the below CSS code will be followed */
+    .screen-master{
+        width: 100%;
+        height: 100%;
+        display: flex; 
+        flex-wrap: wrap; 
+    }
+
+    .board-master{
+        width: 50%;
+    }
+
+    .instrumentation-cluster{
+        margin-top: 20px;
+    }
+}
+
+.instrumentation-cluster{
+    /* background-color: crimson; */
+}
+
+.inner-instrumentation-cluster{
+    /* background-color: blue; */
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    margin-top: 100px;
+}
+
+.button-cluster-instrument{
+    width: 85%;
+    height: 70px;
+    /* background-color: azure; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    background-color: bisque;
+    border-radius: 5px;
+    padding-top: 15px;
+}
+
+.quit-btn{
+    margin-left: 5%;
+}
+
+.quit-btn-replay{
+    margin-left: 25%;
+}
+
+.rev-btn{
+}
+
+.undo-btn{
+}
+
+.fwd-btn{
+}
+
+.move-table{
+    background-color: rgb(162, 157, 197);
+    margin-top: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 85%;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 8px;
+}
+
+.moves-div-tag{
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.white-and-black-moves{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.list-group{
+    width: 45%;
+    margin-left: 10px;
+}
+
+.black-group > li{
+    background-color: black;
+    color: white;
+}
+
+.move-notation-item{
+    text-align: center;
+    margin-top: 5px;
+    border-radius: 5px;
+    height: 20px;
+    font-size: 14px;
+    padding: 0%;
+    list-style-type: none;
+    background-color: white;
+}
+
+.cell{
+    background-color: blanchedalmond;
+    height: 55px;
+    width: 55px;
+    text-align: center;
+}
+
+.board{
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr); /*this is changed from repeat(8, 1fr) to repeat(9, 1fr) for specifying the rank nos.*/
+    height: 440px; /* 55*8 */
+    width: 440px; /* 55*8 */
+}
+
+.column:nth-of-type(odd) .cell:nth-of-type(even){
+    background-color: rgb(90, 160, 55);
+}
+
+.column:nth-of-type(even) .cell:nth-of-type(odd){
+    background-color: rgb(90, 160, 55);
+}
+
+.chess-board-piece{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    width: 40px;
+    height: 40px;
+}
+
+.rank_no{
+    background-color: white;
+    height: 55px;
+    width: 55px;
+    text-align: left;
+    font-family: sans-serif;
+    font-weight: 400;
+}
+
+.file_no{
+    font-family: sans-serif;
+    font-weight: 400;
+}
+
+.capture_piece_img{
+    margin-top: 5px;
+    height: 25px;
+    width: 25px;
+}
+
+.captured_pieces_section{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 35px;
+    background-color: rgb(213, 241, 189);
+    width: 440px;
+}
+
+.captured_pieces_section_black_pieces{
+    margin-bottom: -20px;
+}
+
+.captured_pieces_section_white_pieces{
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+.value_captured_white{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50px;
+    background-color: rgb(81, 100, 65);
+    color: white;
+    width: 440px;
+    font-family: sans-serif;
+    font-weight: 400;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.value_captured_black{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 40px;
+    background-color: rgb(81, 100, 65);
+    color: white;
+    width: 440px;
+    font-family: sans-serif;
+    font-weight: 400;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+
+.navbar{
+    width: 100%;
+    height: 50px;
+    background-color: blueviolet;
+    text-align: center;
+    font-family: sans-serif;
+    color: white;
+    font-size: large;
+    font-weight: 400;
+}
+
+.game-details{
+    /* background-color: rosybrown; */
+    width: 80%;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.game-notes{
+    margin-top: 20px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media only screen and (max-width:500px){
+    .inner-instrumentation-cluster{
+        /* background-color: blue; */
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        overflow: hidden;
+        margin-top: 120px;
+    }
+    
+    .button-cluster-instrument{
+        width: 85%;
+        height: 120px;
+        /* background-color: azure; */
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5px;
+        background-color: bisque;
+        border-radius: 5px;
+        padding-top: 15px;
+    }
+    
+    .quit-btn{
+        margin-left: 30%;
+    }
+    
+    .quit-btn-replay{
+        margin-left: 25%;
+    }
+    
+    .rev-btn{
+    }
+    
+    .undo-btn{
+        margin-right: 30%;
+    }
+
+    .white-resign-btn{
+        margin-left: 14%;
+        margin-right: 1%;
+        margin-top: 10px;
+    }
+
+    .black-resign-btn{
+        margin-top: 10px;
+    }
+    
+    .fwd-btn{
+    }
+    
+    .move-table{
+        background-color: rgb(162, 157, 197);
+        margin-top: 8px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 85%;
+        padding-bottom: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 8px;
+    }
+    
+    .moves-div-tag{
+        margin-left: auto;
+        margin-right: auto;
+        width: 150px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    
+    .white-and-black-moves{
+        display: flex;
+        flex-wrap: nowrap;
+    }
+    
+    .list-group{
+        width: 45%;
+        margin-left: 10px;
+    }
+    
+    .black-group > li{
+        background-color: black;
+        color: white;
+    }
+    
+    .move-notation-item{
+        text-align: center;
+        margin-top: 5px;
+        border-radius: 5px;
+        height: 20px;
+        font-size: 14px;
+        padding: 0%;
+        list-style-type: none;
+        background-color: white;
+    }
+    
+    .cell{
+        background-color: blanchedalmond;
+        height: 55px;
+        width: 45px;
+        text-align: center;
+    }
+    
+    .board{
+        margin-left: auto;
+        margin-right: auto;
+        display: grid;
+        grid-template-columns: repeat(9, 1fr); /*this is changed from repeat(8, 1fr) to repeat(9, 1fr) for specifying the rank nos.*/
+        height: 440px; /* 55*8 */
+        width: 360px; /* 55*8 */
+    }
+    
+    .column:nth-of-type(odd) .cell:nth-of-type(even){
+        background-color: rgb(90, 160, 55);
+    }
+    
+    .column:nth-of-type(even) .cell:nth-of-type(odd){
+        background-color: rgb(90, 160, 55);
+    }
+    
+    .chess-board-piece{
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10%;
+        width: 40px;
+        height: 40px;
+    }
+  
+    
+    .rank_no{
+        background-color: white;
+        height: 55px;
+        width: 55px;
+        text-align: left;
+        font-family: sans-serif;
+        font-weight: 400;
+    }
+    
+    .file_no{
+        font-family: sans-serif;
+        font-weight: 400;
+    }
+    
+    .capture_piece_img{
+        margin-top: 5px;
+        height: 25px;
+        width: 25px;
+    }
+    
+    .captured_pieces_section{
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 35px;
+        background-color: rgb(213, 241, 189);
+        width: 360px;
+    }
+    
+    .captured_pieces_section_black_pieces{
+        margin-bottom: -20px;
+    }
+    
+    .captured_pieces_section_white_pieces{
+        margin-top: -10px;
+        margin-bottom: 5px;
+    }
+    
+    .value_captured_white{
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 50px;
+        background-color: rgb(81, 100, 65);
+        color: white;
+        width: 360px;
+        font-family: sans-serif;
+        font-weight: 400;
+        text-align: center;
+        padding-top: 10px;
+    }
+    
+    .value_captured_black{
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 40px;
+        background-color: rgb(81, 100, 65);
+        color: white;
+        width: 360px;
+        font-family: sans-serif;
+        font-weight: 400;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 0px;
+    }
+    
+    .navbar{
+        width: 100%;
+        height: 50px;
+        background-color: blueviolet;
+        text-align: center;
+        font-family: sans-serif;
+        color: white;
+        font-size: large;
+        font-weight: 400;
+    }
+    
+    .game-details{
+        /* background-color: rosybrown; */
+        width: 80%;
+        height: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+    }
+    
+    .game-notes{
+        margin-top: 20px;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+}

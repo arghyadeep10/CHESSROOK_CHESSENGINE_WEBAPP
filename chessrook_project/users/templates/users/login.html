@@ -1,0 +1,85 @@
+{% extends 'chessrook/base.html' %}
+{% load static %}
+
+{% block title %}
+    Login
+{% endblock title %}
+
+{% block content %}
+    <style>
+        /* Styling for User Login Form */
+
+        /* When the screen width is <= 1000px we need the form to occupy 80% of screen width as we need more screen real estate */
+        @media only screen and (max-width:1000px){
+            .user-registration-form{
+                margin-left: auto;
+                margin-right: auto;
+                width: 80%;
+            }
+        }
+
+        /* When the screen width is >= 1001px we need the form to occupy 40% of screen width as occupying 80% of screen real estate makes it look out of place */
+        @media only screen and (min-width:1001px){
+            .user-registration-form{
+                margin-left: auto;
+                margin-right: auto;
+                width: 40%;
+            }
+        }
+                
+
+        .form-group{
+            margin-bottom: 10px;
+        }
+
+        /* so that all input-group-text have same width */
+        .input-group-text{
+            width: 170px;
+        }
+
+        .input-group{
+            margin-bottom: 10px;
+        }
+
+        .main-h1{
+            margin-top: 20px;
+        }
+    </style>
+    
+    
+    <div class="user-registration-form" id="user-registration-form-id">
+        <h1 class="main-h1">Login</h1>
+        
+        {% if form.errors %}
+            <!-- HTML you wish to display when username or password is incorrect -->
+            <div class="alert alert-danger" role="alert">
+                Invalid Username or Password. Please Try Again
+            </div>
+        {% endif %}
+        
+        <form action="" method="post">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-3">
+                    Login in with username and password
+                </legend>
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping">Username</span>
+                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping" name="username">
+                </div>
+
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping">Password</span>
+                    <input type="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="addon-wrapping" name="password">
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Login</button>
+            </div>
+        </form>
+
+        <div class="alert alert-secondary" role="alert">
+            Don't have an account <a href="{% url 'register' %}" class="link-dark">Sign Up</a>
+        </div>
+    </div>
+{% endblock content %}

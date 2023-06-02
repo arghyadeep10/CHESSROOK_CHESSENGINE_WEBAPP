@@ -1,0 +1,491 @@
+<script>
+
+    game_id_main = document.getElementById("game-id-main-id").innerHTML;
+
+    // Game details editing system STARTS -------------------------------------------------
+    // Game Notes Editing STARTS *************
+    game_notes_edit_btn = document.getElementById("game-notes-edit-btn-id");
+    game_notes_edit_btn.addEventListener("click", function(){
+        current_game_notes = document.getElementById("game-notes-main-id").innerHTML;
+        gnotes_prompt = current_game_notes;
+        while(true){
+            gnotes_prompt = prompt("Game Notes: ", current_game_notes);
+            if(gnotes_prompt == null){
+                break;
+            }
+            else if(gnotes_prompt.length <= 5000){
+                current_game_name = document.getElementById("game-name-main-id").innerHTML;
+                let csr = $("input[name=csrfmiddlewaretoken]").val();
+                mydata = {game_name_edit:current_game_name, game_notes_edit:gnotes_prompt, csrfmiddlewaretoken: csr, gid: game_id_main}
+                $.ajax({
+                    url: "{% url 'chessrook:update_game_details' %}",
+                    method: "POST",
+                    data: mydata,
+                    dataType: "json",
+                    success: function(data){
+                        document.getElementById("game-notes-main-id").innerHTML = gnotes_prompt;
+                    }
+                });
+                break;
+            }
+            else{
+                alert("Game Notes should be 5000 characters or less");
+            }
+        }     
+    });
+    // Game Notes Editing ENDS *************
+
+    // Games Name Editing STARTS ************
+    game_name_edit_btn = document.getElementById("game-name-edit-btn-id");
+    game_name_edit_btn.addEventListener("click", function(){
+        current_game_notes = document.getElementById("game-notes-main-id").innerHTML;
+        current_game_name = document.getElementById("game-name-main-id").innerHTML;
+        gname_prompt = current_game_name;
+        while(true){
+            gname_prompt = prompt("Game Name (50 char or less): ", gname_prompt);
+            if(gname_prompt == null){
+                break;
+            }
+            else if(gname_prompt.length <= 50){
+                let csr = $("input[name=csrfmiddlewaretoken]").val();
+                mydata = {game_name_edit:gname_prompt, game_notes_edit:current_game_notes, csrfmiddlewaretoken: csr, gid: game_id_main}
+                $.ajax({
+                    url: "{% url 'chessrook:update_game_details' %}",
+                    method: "POST",
+                    data: mydata,
+                    dataType: "json",
+                    success: function(data){
+                        document.getElementById("game-name-main-id").innerHTML = gname_prompt;
+                    }
+                });
+                break;
+            }
+            else{
+                alert("Game Name should be 50 characters or less");
+            } 
+        }              
+    });
+    // Games Name Editing ENDS ************
+    // Game details editing system ENDS -------------------------------------------------
+
+    // for handling White Resign Button Click STARTS **************************************
+    white_resign_btn = document.getElementById('white-resign-btn-id');
+    white_resign_btn.addEventListener("click", function(){
+        cmd = "WHITE_RESIGN";
+        console.log("cmd generated = " + cmd);
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+        
+        //we now wish to make AJAX Call
+        mydata = {command: cmd, csrfmiddlewaretoken: csr, gid: game_id_main};
+        $.ajax({
+            url: "{% url 'chessrook:exe_cmd' %}",
+            method: "POST",
+            data: mydata,
+            dataType: "json",
+            success: function(data){
+                console.log("cmd_status: " + data.cmd_status);
+                console.log("move_status: " + data.move_status);
+
+                window.location.reload();
+            },
+        });
+    });
+
+    // for handling White Resign Button Click ENDS **************************************
+        
+    // for handling Black Resign Button Click STARTS **************************************
+    black_resign_btn = document.getElementById('black-resign-btn-id');
+    black_resign_btn.addEventListener("click", function(){
+        cmd = "BLACK_RESIGN";
+        console.log("cmd generated = " + cmd);
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+        
+        //we now wish to make AJAX Call
+        mydata = {command: cmd, csrfmiddlewaretoken: csr, gid: game_id_main};
+        $.ajax({
+            url: "{% url 'chessrook:exe_cmd' %}",
+            method: "POST",
+            data: mydata,
+            dataType: "json",
+            success: function(data){
+                console.log("cmd_status: " + data.cmd_status);
+                console.log("move_status: " + data.move_status);
+
+                window.location.reload();
+            },
+        });
+    });
+    // for handling Black Resign Button Click ENDS **************************************
+
+
+    // Game Move Logic STARTS --------------------------------------------------------    
+    const allCells = document.getElementsByClassName("cell");
+
+    cells_clicked = [];
+    old_coloring_info = [];
+
+    // for handling UNDO Button Click  STARTS **********************************
+    undo_btn = document.getElementById("undo-btn-id");
+    undo_btn.addEventListener("click", function(){
+        cmd = "UNDO";
+        console.log("cmd generated = " + cmd);
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+        
+        //we now wish to make AJAX Call
+        mydata = {command: cmd, csrfmiddlewaretoken: csr, gid: game_id_main};
+        $.ajax({
+            url: "{% url 'chessrook:exe_cmd' %}",
+            method: "POST",
+            data: mydata,
+            dataType: "json",
+            success: function(data){
+                console.log("cmd_status: " + data.cmd_status);
+                console.log("move_status: " + data.move_status);
+
+                $("form")[0].reset();
+
+                if (data.move_status == "valid"){
+                    bpc_1 = data.bpc_1
+                    bpc_2 = data.bpc_2
+                    wpc_1 = data.wpc_1
+                    wpc_2 = data.wpc_2
+                    value_black_captured = data.value_black_captured
+                    value_white_captured = data.value_white_captured
+                    white_moves = data.white_moves
+                    black_moves = data.black_moves
+
+                    white_move_html_content = "";
+                    for(k=0;k<white_moves.length; k++){
+                        w_move = "<li class='move-notation-item'>" + white_moves[k] + "</li>";
+                        white_move_html_content += w_move;
+                    }
+
+                    black_move_html_content = "";
+                    for(l=0; l<black_moves.length; l++){
+                        b_move = "<li class='move-notation-item'>" + black_moves[l] + "</li>";
+                        black_move_html_content += b_move;
+                    }
+
+                    $('.white-group').html(white_move_html_content);
+                    $('.black-group').html(black_move_html_content);
+
+                    console.log("wpc_1 = " + wpc_1);
+                    let op_expr_wp_1 = "";
+                    for(let i=0; i<wpc_1.length; i++){
+                        let p_src = 'static/' + wpc_1[i];
+                        op_expr_wp_1 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";                                    
+                    }
+                    $('.captured_pieces_section_white_pieces_1').html(op_expr_wp_1);
+
+                    console.log("wpc_2 = " + wpc_2);
+                    let op_expr_wp_2 = "";
+                    for(let i=0; i<wpc_2.length; i++){
+                        let p_src = 'static/' + wpc_2[i];
+                        op_expr_wp_2 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";
+                        
+                    }
+                    $('.captured_pieces_section_white_pieces_2').html(op_expr_wp_2);
+
+                    console.log("bpc_1 = " + bpc_1);
+                    let op_expr_bp_1 = "";
+                    for(let i=0; i<bpc_1.length; i++){
+                        let p_src = 'static/' + bpc_1[i];
+                        op_expr_bp_1 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";
+                    }
+                    $('.captured_pieces_section_black_pieces_1').html(op_expr_bp_1);
+
+                    console.log("bpc_2 = " + bpc_2);
+                    let op_expr_bp_2 = "";
+                    for(let i=0; i<bpc_2.length; i++){
+                        let p_src = 'static/' + bpc_2[i];
+                        op_expr_bp_2 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";                                    
+                    }
+                    $('.captured_pieces_section_black_pieces_2').html(op_expr_bp_2);
+
+                    vcw = data.value_white_captured;
+                    vcw_op_expr = "+" + vcw;
+                    $('.value_captured_white').html(vcw_op_expr);
+
+                    bcw = data.value_black_captured;
+                    bcw_op_expr = "+" + bcw;
+                    $('.value_captured_black').html(bcw_op_expr);
+
+                    list_data = data.dict_data_in_list_form
+                    
+                    board_map = new Map(); // a dict hash map in JS
+                    for(i=0; i<list_data.length; i+=2){
+                        key = list_data[i];
+                        value = list_data[i+1];
+                        board_map.set(key, value);
+                    }
+
+                    
+                    for(i=0; i<8; i++){
+                        for(j=0; j<8; j++){
+                            key_expr = "cell_" + i + j;
+                            class_name_expr = "." + key_expr;
+                            // console.log(class_name_expr);
+                            path_src = board_map.get(key_expr);
+                            // console.log(path_src);
+
+                            output_expr = "<img src='" + path_src + "' alt='' class='chess-board-piece'>";
+                            $(class_name_expr).html(output_expr);
+                        }
+                    }
+                }
+            },
+        });
+    });
+    // for handling UNDO Button Click  ENDS **********************************
+
+    // for handling chess moves STARTS ****************************************
+    for(const ele of allCells){
+        ele.addEventListener("click", function(){
+            eleClassName = ele.className; // this will be of the form "cell cell_64"                        
+            specificEleClassName = eleClassName[10] + eleClassName[11]; //this will be 64
+
+            element_id = "";
+            for(i=5; i<eleClassName.length; i++){
+                element_id += eleClassName[i];
+            }
+            element_id += "_id";
+            
+            // coloring logic
+            if(cells_clicked.length == 0){
+                // this is a new move being made, so reset the old coloring first
+                if(old_coloring_info.length == 2){
+                    element_id_1 = old_coloring_info[0];
+                    element_id_2 = old_coloring_info[1];
+                    old_coloring_info = []
+
+                    // extract numbers from the coloring first
+                    // cell_ab_id
+                    a = parseInt(element_id_1[5]);
+                    b = parseInt(element_id_1[6]);
+                    console.log(a);
+                    console.log(b);
+                    if((a+b) % 2 == 0){
+                        // color will be blanched almond
+                        document.getElementById(element_id_1).style.backgroundColor = "blanchedalmond";
+                    }
+                    else{
+                        // color will be rgb(90, 160, 55)
+                        document.getElementById(element_id_1).style.backgroundColor = "rgb(90, 160, 55)";
+                    }
+
+                    a = parseInt(element_id_2[5]);
+                    b = parseInt(element_id_2[6]);
+                    console.log(a);
+                    console.log(b);
+                    if((a+b) % 2 == 0){
+                        // color will be blanched almond
+                        document.getElementById(element_id_2).style.backgroundColor = "blanchedalmond";
+                    }
+                    else{
+                        // color will be rgb(90, 160, 55)
+                        document.getElementById(element_id_2).style.backgroundColor = "rgb(90, 160, 55)";
+                    }
+
+                }                
+
+                // make this cell lightyellow - starting position
+                // but before that register what were the older move cells, so that it can be later restored
+                old_coloring_info.push(element_id);
+                console.log(old_coloring_info);
+                
+                document.getElementById(element_id).style.backgroundColor = "greenyellow";
+            }
+            else if(cells_clicked.length == 1){
+                // special case if the second cell selected is the first cell -- deselecting the cell
+                if(cells_clicked[0] == specificEleClassName){
+                    element_id_1 = old_coloring_info[0];
+                    old_coloring_info = []
+
+                    a = parseInt(element_id_1[5]);
+                    b = parseInt(element_id_1[6]);
+                    console.log(a);
+                    console.log(b);
+                    if((a+b) % 2 == 0){
+                        // color will be blanched almond
+                        document.getElementById(element_id_1).style.backgroundColor = "blanchedalmond";
+                    }
+                    else{
+                        // color will be rgb(90, 160, 55)
+                        document.getElementById(element_id_1).style.backgroundColor = "rgb(90, 160, 55)";
+                    }
+                }
+                else{
+                    // make this cell lightblue - ending position
+                    // but before that register what were the older move cells, so that it can be later restored
+                    old_coloring_info.push(element_id);
+                    console.log(old_coloring_info);
+                    
+                    document.getElementById(element_id).style.backgroundColor = "lightblue";
+                }                
+            }
+            
+
+            cells_clicked.push(specificEleClassName);
+            
+            if(cells_clicked.length == 2){
+                if(cells_clicked[0] == cells_clicked[1]){
+                    // select and deselect of a cell - not a move thus no need for AJAX call
+                    cells_clicked = [];
+                }
+                else{
+                    // now we need to check if this is case of pawn promotion or not 
+                    // and accordingly display menu for selection promotion piece
+
+                    // to find piece moved type by examining the img tag inner html, if it contains the word pawn
+                    // then possibility of promotion
+                    let promotionPieceType = "";
+                    
+                    cell_id_generate = "cell_" + cells_clicked[0] + "_id";
+                    inner_html_of_cell = document.getElementById(cell_id_generate).innerHTML;
+                    console.log("inner_html: " + inner_html_of_cell);
+                    if(inner_html_of_cell.includes('pawn')){
+                        console.log("pawn movement");
+                        // find destination cell row no.
+                        dest_cell_row = parseInt(cells_clicked[1][0]);
+                        console.log("dest_cell_row = " + dest_cell_row);
+                        if(dest_cell_row == 0 || dest_cell_row == 7){
+                            let pawnPromotionPrompt = ""; 
+                            do{
+                                pawnPromotionPrompt = prompt("Please enter pawn promotion choice [Q: Queen] [R: Rook] [B: Bishop] [N: Knight]: ", "Q");
+                                if(pawnPromotionPrompt == 'Q' || pawnPromotionPrompt == 'R' || pawnPromotionPrompt == 'B' || pawnPromotionPrompt == 'N'){
+                                    promotionPieceType = pawnPromotionPrompt;        
+                                    break;
+                                }
+                                else{
+                                    alert("Incorrect Choice entered !! Please enter pawn promotion choice [Q: Queen] [R: Rook] [B: Bishop] [N: Knight]: ");
+                                }
+                            }
+                            while(promotionPieceType == "");
+                        }
+                    }
+
+                    cmd = cells_clicked[0] + "_" + cells_clicked[1];
+                    if(promotionPieceType != ""){
+                        cmd += ("_" + promotionPieceType);
+                    }
+                    console.log("cmd generated = " + cmd);
+                    cells_clicked = []
+                    let csr = $("input[name=csrfmiddlewaretoken]").val();
+                    
+                    console.log(cmd);
+                    
+                    //we now wish to make AJAX Call
+                    mydata = {command: cmd, csrfmiddlewaretoken: csr, gid: game_id_main};
+                    $.ajax({
+                        url: "{% url 'chessrook:exe_cmd' %}",
+                        method: "POST",
+                        data: mydata,
+                        dataType: "json",
+                        success: function(data){
+                            console.log("cmd_status: " + data.cmd_status);
+                            console.log("move_status: " + data.move_status);
+
+                            $("form")[0].reset();
+
+                            if (data.move_status == "valid"){
+                                bpc_1 = data.bpc_1
+                                bpc_2 = data.bpc_2
+                                wpc_1 = data.wpc_1
+                                wpc_2 = data.wpc_2
+                                value_black_captured = data.value_black_captured
+                                value_white_captured = data.value_white_captured
+                                white_moves = data.white_moves
+                                black_moves = data.black_moves
+
+                                white_move_html_content = "";
+                                for(k=0;k<white_moves.length; k++){
+                                    w_move = "<li class='move-notation-item'>" + white_moves[k] + "</li>";
+                                    white_move_html_content += w_move;
+                                }
+
+                                black_move_html_content = "";
+                                for(l=0; l<black_moves.length; l++){
+                                    b_move = "<li class='move-notation-item'>" + black_moves[l] + "</li>";
+                                    black_move_html_content += b_move;
+                                }
+
+                                $('.white-group').html(white_move_html_content);
+                                $('.black-group').html(black_move_html_content);
+
+                                console.log("wpc_1 = " + wpc_1);
+                                let op_expr_wp_1 = "";
+                                for(let i=0; i<wpc_1.length; i++){
+                                    let p_src = 'static/' + wpc_1[i];
+                                    op_expr_wp_1 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";                                    
+                                }
+                                $('.captured_pieces_section_white_pieces_1').html(op_expr_wp_1);
+
+                                console.log("wpc_2 = " + wpc_2);
+                                let op_expr_wp_2 = "";
+                                for(let i=0; i<wpc_2.length; i++){
+                                    let p_src = 'static/' + wpc_2[i];
+                                    op_expr_wp_2 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";
+                                    
+                                }
+                                $('.captured_pieces_section_white_pieces_2').html(op_expr_wp_2);
+
+                                console.log("bpc_1 = " + bpc_1);
+                                let op_expr_bp_1 = "";
+                                for(let i=0; i<bpc_1.length; i++){
+                                    let p_src = 'static/' + bpc_1[i];
+                                    op_expr_bp_1 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";
+                                }
+                                $('.captured_pieces_section_black_pieces_1').html(op_expr_bp_1);
+
+                                console.log("bpc_2 = " + bpc_2);
+                                let op_expr_bp_2 = "";
+                                for(let i=0; i<bpc_2.length; i++){
+                                    let p_src = 'static/' + bpc_2[i];
+                                    op_expr_bp_2 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";                                    
+                                }
+                                $('.captured_pieces_section_black_pieces_2').html(op_expr_bp_2);
+
+                                vcw = data.value_white_captured;
+                                vcw_op_expr = "+" + vcw;
+                                $('.value_captured_white').html(vcw_op_expr);
+
+                                bcw = data.value_black_captured;
+                                bcw_op_expr = "+" + bcw;
+                                $('.value_captured_black').html(bcw_op_expr);
+
+                                list_data = data.dict_data_in_list_form
+                                
+                                board_map = new Map(); // a dict hash map in JS
+                                for(i=0; i<list_data.length; i+=2){
+                                    key = list_data[i];
+                                    value = list_data[i+1];
+                                    board_map.set(key, value);
+                                }
+
+                                for(i=0; i<8; i++){
+                                    for(j=0; j<8; j++){
+                                        key_expr = "cell_" + i + j;
+                                        class_name_expr = "." + key_expr;
+                                        // console.log(class_name_expr);
+                                        path_src = board_map.get(key_expr);
+                                        // console.log(path_src);
+
+                                        output_expr = "<img src='" + path_src + "' alt='' class='chess-board-piece'>";
+                                        $(class_name_expr).html(output_expr);
+                                    }
+                                }
+
+                                if(data.game_end == true){
+                                    window.location.reload();
+                                }
+                            }
+                        },
+                    });
+                }
+            }
+        });
+    }
+    // for handling chess moves ENDS **********************************
+    // Game Move Logic ENDS --------------------------------------------------------
+
+</script>

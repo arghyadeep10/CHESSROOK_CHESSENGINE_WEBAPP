@@ -1,0 +1,321 @@
+<script>
+
+    game_id_main = document.getElementById("game-id-main-id").innerHTML;
+
+    // Game details editing system STARTS ---------------------------------------------------------
+    // Game Notes Edit System STARTS ****************************************
+    game_notes_edit_btn = document.getElementById("game-notes-edit-btn-id");
+    game_notes_edit_btn.addEventListener("click", function(){
+        current_game_notes = document.getElementById("game-notes-main-id").innerHTML;
+        gnotes_prompt = current_game_notes;
+        while(true){
+            gnotes_prompt = prompt("Game Notes: ", current_game_notes);
+            if(gnotes_prompt == null){
+                break;
+            }
+            else if(gnotes_prompt.length <= 5000){
+                current_game_name = document.getElementById("game-name-main-id").innerHTML;
+                let csr = $("input[name=csrfmiddlewaretoken]").val();
+                mydata = {game_name_edit:current_game_name, game_notes_edit:gnotes_prompt, csrfmiddlewaretoken: csr, gid: game_id_main}
+                $.ajax({
+                    url: "{% url 'chessrook:update_game_details' %}",
+                    method: "POST",
+                    data: mydata,
+                    dataType: "json",
+                    success: function(data){
+                        document.getElementById("game-notes-main-id").innerHTML = gnotes_prompt;
+                    }
+                });
+                break;
+            }
+            else{
+                alert("Game Notes should be 5000 characters or less");
+            }
+        }     
+    });
+    // Game Notes Edit System ENDS ****************************************
+
+    // Game Name Edit System STARTS *******************************************
+    game_name_edit_btn = document.getElementById("game-name-edit-btn-id");
+    game_name_edit_btn.addEventListener("click", function(){
+        current_game_notes = document.getElementById("game-notes-main-id").innerHTML;
+        current_game_name = document.getElementById("game-name-main-id").innerHTML;
+        gname_prompt = current_game_name;
+        while(true){
+            gname_prompt = prompt("Game Name (50 char or less): ", gname_prompt);
+            if(gname_prompt == null){
+                break;
+            }
+            else if(gname_prompt.length <= 50){
+                let csr = $("input[name=csrfmiddlewaretoken]").val();
+                mydata = {game_name_edit:gname_prompt, game_notes_edit:current_game_notes, csrfmiddlewaretoken: csr, gid: game_id_main}
+                $.ajax({
+                    url: "{% url 'chessrook:update_game_details' %}",
+                    method: "POST",
+                    data: mydata,
+                    dataType: "json",
+                    success: function(data){
+                        document.getElementById("game-name-main-id").innerHTML = gname_prompt;
+                    }
+                });
+                break;
+            }
+            else{
+                alert("Game Name should be 50 characters or less");
+            } 
+        }              
+    });
+    // Game Name Edit System ENDS *******************************************
+    // Game details editing system ENDS ---------------------------------------------------------
+
+    // FWD and REV Logic STARTS ---------------------------------------------------
+    const allCells = document.getElementsByClassName("cell");
+
+    cells_clicked = [];
+    old_coloring_info = [];
+
+    // for handling FWD Button Click  STARTS ***************************************
+    fwd_btn = document.getElementById("fwd-btn-id");
+    fwd_btn.addEventListener("click", function(){
+        cmd = "FWD";
+        console.log("cmd generated = " + cmd);
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+
+        let move_no = document.getElementById('move-no-id').innerHTML;
+        move_no = parseInt(move_no);
+        
+        //we now wish to make AJAX Call
+        mydata = {command: cmd, csrfmiddlewaretoken: csr, move_number: move_no, gid: game_id_main};
+        $.ajax({
+            url: "{% url 'chessrook:replay_exe_cmd' %}",
+            method: "POST",
+            data: mydata,
+            dataType: "json",
+            success: function(data){
+                console.log("cmd_status: " + data.cmd_status);
+                console.log("replay_status: " + data.replay_status);
+
+                $("form")[0].reset();
+
+                if (data.replay_status == "valid"){
+                    
+                    next_move_no = move_no + 1;
+                    next_move_no_str = "";
+                    next_move_no_str += next_move_no;
+                    document.getElementById('move-no-id').innerHTML = next_move_no_str;
+
+                    bpc_1 = data.bpc_1
+                    bpc_2 = data.bpc_2
+                    wpc_1 = data.wpc_1
+                    wpc_2 = data.wpc_2
+                    value_black_captured = data.value_black_captured
+                    value_white_captured = data.value_white_captured
+                    white_moves = data.white_moves
+                    black_moves = data.black_moves
+
+                    white_move_html_content = "";
+                    for(k=0;k<white_moves.length; k++){
+                        w_move = "<li class='move-notation-item'>" + white_moves[k] + "</li>";
+                        white_move_html_content += w_move;
+                    }
+
+                    black_move_html_content = "";
+                    for(l=0; l<black_moves.length; l++){
+                        b_move = "<li class='move-notation-item'>" + black_moves[l] + "</li>";
+                        black_move_html_content += b_move;
+                    }
+
+                    $('.white-group').html(white_move_html_content);
+                    $('.black-group').html(black_move_html_content);
+
+                    console.log("wpc_1 = " + wpc_1);
+                    let op_expr_wp_1 = "";
+                    for(let i=0; i<wpc_1.length; i++){
+                        let p_src = 'static/' + wpc_1[i];
+                        op_expr_wp_1 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";                                    
+                    }
+                    $('.captured_pieces_section_white_pieces_1').html(op_expr_wp_1);
+
+                    console.log("wpc_2 = " + wpc_2);
+                    let op_expr_wp_2 = "";
+                    for(let i=0; i<wpc_2.length; i++){
+                        let p_src = 'static/' + wpc_2[i];
+                        op_expr_wp_2 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";
+                        
+                    }
+                    $('.captured_pieces_section_white_pieces_2').html(op_expr_wp_2);
+
+                    console.log("bpc_1 = " + bpc_1);
+                    let op_expr_bp_1 = "";
+                    for(let i=0; i<bpc_1.length; i++){
+                        let p_src = 'static/' + bpc_1[i];
+                        op_expr_bp_1 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";
+                    }
+                    $('.captured_pieces_section_black_pieces_1').html(op_expr_bp_1);
+
+                    console.log("bpc_2 = " + bpc_2);
+                    let op_expr_bp_2 = "";
+                    for(let i=0; i<bpc_2.length; i++){
+                        let p_src = 'static/' + bpc_2[i];
+                        op_expr_bp_2 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";                                    
+                    }
+                    $('.captured_pieces_section_black_pieces_2').html(op_expr_bp_2);
+
+                    vcw = data.value_white_captured;
+                    vcw_op_expr = "+" + vcw;
+                    $('.value_captured_white').html(vcw_op_expr);
+
+                    bcw = data.value_black_captured;
+                    bcw_op_expr = "+" + bcw;
+                    $('.value_captured_black').html(bcw_op_expr);
+
+                    list_data = data.dict_data_in_list_form
+                    
+                    board_map = new Map(); // a dict hash map in JS
+                    for(i=0; i<list_data.length; i+=2){
+                        key = list_data[i];
+                        value = list_data[i+1];
+                        board_map.set(key, value);
+                    }
+
+                    for(i=0; i<8; i++){
+                        for(j=0; j<8; j++){
+                            key_expr = "cell_" + i + j;
+                            class_name_expr = "." + key_expr;
+                            // console.log(class_name_expr);
+                            path_src = board_map.get(key_expr);
+                            // console.log(path_src);
+
+                            output_expr = "<img src='" + path_src + "' alt='' class='chess-board-piece'>";
+                            $(class_name_expr).html(output_expr);
+                        }
+                    }
+                }
+            },
+        });
+    });
+    // for handling FWD Button Click  ENDS ***************************************
+
+    // for handling REV Button Click STARTS ************************************
+    rev_btn = document.getElementById("rev-btn-id");
+    rev_btn.addEventListener("click", function(){
+        cmd = "REV";
+        console.log("cmd generated = " + cmd);
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+
+        let move_no = document.getElementById('move-no-id').innerHTML;
+        move_no = parseInt(move_no);
+                
+        //we now wish to make AJAX Call
+        mydata = {command: cmd, csrfmiddlewaretoken: csr, move_number:move_no, gid: game_id_main};
+        $.ajax({
+            url: "{% url 'chessrook:replay_exe_cmd' %}",
+            method: "POST",
+            data: mydata,
+            dataType: "json",
+            success: function(data){
+                console.log("cmd_status: " + data.cmd_status);
+                console.log("replay_status: " + data.replay_status);
+
+                $("form")[0].reset();
+
+                if (data.replay_status == "valid"){
+                    
+                    next_move_no = move_no - 1;
+                    next_move_no_str = "";
+                    next_move_no_str += next_move_no;
+                    document.getElementById('move-no-id').innerHTML = next_move_no_str;
+                    
+                    bpc_1 = data.bpc_1
+                    bpc_2 = data.bpc_2
+                    wpc_1 = data.wpc_1
+                    wpc_2 = data.wpc_2
+                    value_black_captured = data.value_black_captured
+                    value_white_captured = data.value_white_captured
+                    white_moves = data.white_moves
+                    black_moves = data.black_moves
+
+                    white_move_html_content = "";
+                    for(k=0;k<white_moves.length; k++){
+                        w_move = "<li class='move-notation-item'>" + white_moves[k] + "</li>";
+                        white_move_html_content += w_move;
+                    }
+
+                    black_move_html_content = "";
+                    for(l=0; l<black_moves.length; l++){
+                        b_move = "<li class='move-notation-item'>" + black_moves[l] + "</li>";
+                        black_move_html_content += b_move;
+                    }
+
+                    $('.white-group').html(white_move_html_content);
+                    $('.black-group').html(black_move_html_content);
+
+                    console.log("wpc_1 = " + wpc_1);
+                    let op_expr_wp_1 = "";
+                    for(let i=0; i<wpc_1.length; i++){
+                        let p_src = 'static/' + wpc_1[i];
+                        op_expr_wp_1 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";                                    
+                    }
+                    $('.captured_pieces_section_white_pieces_1').html(op_expr_wp_1);
+
+                    console.log("wpc_2 = " + wpc_2);
+                    let op_expr_wp_2 = "";
+                    for(let i=0; i<wpc_2.length; i++){
+                        let p_src = 'static/' + wpc_2[i];
+                        op_expr_wp_2 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";
+                        
+                    }
+                    $('.captured_pieces_section_white_pieces_2').html(op_expr_wp_2);
+
+                    console.log("bpc_1 = " + bpc_1);
+                    let op_expr_bp_1 = "";
+                    for(let i=0; i<bpc_1.length; i++){
+                        let p_src = 'static/' + bpc_1[i];
+                        op_expr_bp_1 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";
+                    }
+                    $('.captured_pieces_section_black_pieces_1').html(op_expr_bp_1);
+
+                    console.log("bpc_2 = " + bpc_2);
+                    let op_expr_bp_2 = "";
+                    for(let i=0; i<bpc_2.length; i++){
+                        let p_src = 'static/' + bpc_2[i];
+                        op_expr_bp_2 += "<img src='" + p_src + "' alt='' class='capture_piece_img'>";                                    
+                    }
+                    $('.captured_pieces_section_black_pieces_2').html(op_expr_bp_2);
+
+                    vcw = data.value_white_captured;
+                    vcw_op_expr = "+" + vcw;
+                    $('.value_captured_white').html(vcw_op_expr);
+
+                    bcw = data.value_black_captured;
+                    bcw_op_expr = "+" + bcw;
+                    $('.value_captured_black').html(bcw_op_expr);
+
+                    list_data = data.dict_data_in_list_form
+                    
+                    board_map = new Map(); // a dict hash map in JS
+                    for(i=0; i<list_data.length; i+=2){
+                        key = list_data[i];
+                        value = list_data[i+1];
+                        board_map.set(key, value);
+                    }
+
+                    for(i=0; i<8; i++){
+                        for(j=0; j<8; j++){
+                            key_expr = "cell_" + i + j;
+                            class_name_expr = "." + key_expr;
+                            // console.log(class_name_expr);
+                            path_src = board_map.get(key_expr);
+                            // console.log(path_src);
+
+                            output_expr = "<img src='" + path_src + "' alt='' class='chess-board-piece'>";
+                            $(class_name_expr).html(output_expr);
+                        }
+                    }
+                }
+            },
+        });
+    });
+    // for handling REV Button Click ENDS ************************************
+    // FWD and REV Logic STARTS ---------------------------------------------------
+</script>

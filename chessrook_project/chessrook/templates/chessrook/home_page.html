@@ -1,0 +1,103 @@
+{% extends 'chessrook/base.html' %}
+{% load static %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+{% block content %}
+    <style>
+        form{
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media only screen and (max-width:500px){
+            form{
+                width: 360px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        /* Responsive Design for game grids */
+
+        @media only screen and (max-width: 1445px){
+            .col-sm-6{
+                margin-top: 10px;
+            }
+        }
+
+        @media only screen and (min-width: 1445px){
+            .col-sm-6{
+                width: 500px;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 10px;
+            }
+        }
+
+        .row{
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        
+        @media only screen and (max-width:1669px){
+            /* screen width <= 1669 px */
+            .row{
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    </style>
+
+    <h1 style="margin-bottom: 20px; margin-left: 10px;">Homepage</h1>
+    <form action="{% url 'chessrook:serve_test_board_new_game' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            {{ form.game_name }}
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit">New Game</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        {% for game in games %} 
+          <div class="col-sm-6 mb-3 mb-sm-0">
+            <div class="card text-center mb-3">
+              <div class="card-body">                
+                {% if game.status_detailed == "Black Won" %}
+                <h5 class="card-title">{{ game.name }} <span class="badge bg-danger">{{ game.id }}</span> <span class="badge bg-warning">{{ game.status }}</span> <span class="badge bg-dark">Black Won</span> </h5>
+                {% elif game.status_detailed == "White Won" %}
+                <h5 class="card-title">{{ game.name }} <span class="badge bg-danger">{{ game.id }}</span> <span class="badge bg-warning">{{ game.status }}</span> <span class="badge text-bg-light">White Won</span> </h5>                
+                {% elif game.status_detailed == "Draw" %}
+                <h5 class="card-title">{{ game.name }} <span class="badge bg-danger">{{ game.id }}</span> <span class="badge bg-warning">{{ game.status }}</span> <span class="badge bg-secondary">Draw</span> </h5>
+                {% else %}
+                <h5 class="card-title">{{ game.name }} <span class="badge bg-danger">{{ game.id }}</span> <span class="badge bg-warning">{{ game.status }}</span> </h5>
+                {% endif %}
+                <h6 class="card-title">{{ game.time }}</h6>
+                <!-- We are displaying the first 184 characters of game notes in this below p section -->
+                <p class="card-text">{{ game.mini_notes }} ...</p>
+                {% if game.status == "Active" %}
+                    <a href="{% url 'chessrook:serve_test_board' game.id %}" class="btn btn-success">Resume</a>
+                {% else %}
+                    <a href="{% url 'chessrook:serve_replay_board' game.id %}" class="btn btn-primary">Analyze</a>
+                {% endif %}
+                
+                
+              </div>
+            </div>
+          </div>
+        {% empty %}
+        <div class="alert alert-primary" role="alert" style="text-align: center; width: 60%; margin-left: auto; margin-right: auto;">
+            You don't have any Games played. Play a New Game Now !
+          </div>
+        {% endfor %}
+    </div>
+    
+{% endblock content %}

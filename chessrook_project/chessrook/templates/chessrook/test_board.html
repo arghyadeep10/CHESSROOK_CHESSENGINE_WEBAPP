@@ -1,0 +1,362 @@
+{% extends 'chessrook/base.html' %}
+{% load static %}
+
+{% block title %}
+    Test Board
+{% endblock title %}
+
+{% block content %}
+    
+    <div class="screen-master">
+
+        <div class="board-master">
+            <div class="value_captured_white">
+                +{{ value_white_captured }}
+            </div>
+            <div class="captured_pieces_section captured_pieces_section_white_pieces captured_pieces_section_white_pieces_1">            
+                {% for ele in wpc_1 %}
+                    <img class="capture_piece_img" src="{% static ele %}" alt="">
+                {% endfor %}
+            </div>
+            <div class="captured_pieces_section captured_pieces_section_white_pieces captured_pieces_section_white_pieces_2">
+                {% for ele in wpc_2 %}
+                    <img class="capture_piece_img" src="{% static ele %}" alt="">
+                {% endfor %}
+            </div>
+    
+            <div class="board">
+                <div class="column-0 column">
+                    <div class="cell cell_00" id="cell_00_id">
+                        <img src="{% static cell_00 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_10" id="cell_10_id">
+                        <img src="{% static cell_10 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_20" id="cell_20_id">
+                        <img src="{% static cell_20 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_30" id="cell_30_id">
+                        <img src="{% static cell_30 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_40" id="cell_40_id">
+                        <img src="{% static cell_40 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_50" id="cell_50_id">
+                        <img src="{% static cell_50 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_60" id="cell_60_id">
+                        <img src="{% static cell_60 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_70" id="cell_70_id">
+                        <img src="{% static cell_70 %}" alt="" class="chess-board-piece">
+                    </div>                
+    
+                    <div class="file_no file_no_a" id="file_no_a_id">a</div>
+                </div>
+                <div class="column-1 column">
+                    <div class="cell cell_01" id="cell_01_id">
+                        <img src="{% static cell_01 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_11" id="cell_11_id">
+                        <img src="{% static cell_11 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_21" id="cell_21_id">
+                        <img src="{% static cell_21 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_31" id="cell_31_id">
+                        <img src="{% static cell_31 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_41" id="cell_41_id">
+                        <img src="{% static cell_41 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_51" id="cell_51_id">
+                        <img src="{% static cell_51 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_61" id="cell_61_id">
+                        <img src="{% static cell_61 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_71" id="cell_71_id">
+                        <img src="{% static cell_71 %}" alt="" class="chess-board-piece">
+                    </div>        
+                    
+                    <div class="file_no file_no_b" id="file_no_b_id">b</div>
+                </div>
+                <div class="column-2 column">
+                    <div class="cell cell_02" id="cell_02_id">
+                        <img src="{% static cell_02 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_12" id="cell_12_id">
+                        <img src="{% static cell_12 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_22" id="cell_22_id">
+                        <img src="{% static cell_22 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_32" id="cell_32_id">
+                        <img src="{% static cell_32 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_42" id="cell_42_id">
+                        <img src="{% static cell_42 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_52" id="cell_52_id">
+                        <img src="{% static cell_52 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_62" id="cell_62_id">
+                        <img src="{% static cell_62 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_72" id="cell_72_id">
+                        <img src="{% static cell_72 %}" alt="" class="chess-board-piece">
+                    </div>
+                    
+                    <div class="file_no file_no_c" id="file_no_c_id">c</div>
+                </div>
+                <div class="column-3 column">
+                    <div class="cell cell_03" id="cell_03_id">
+                        <img src="{% static cell_03 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_13" id="cell_13_id">
+                        <img src="{% static cell_13 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_23" id="cell_23_id">
+                        <img src="{% static cell_23 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_33" id="cell_33_id">
+                        <img src="{% static cell_33 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_43" id="cell_43_id">
+                        <img src="{% static cell_43 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_53" id="cell_53_id">
+                        <img src="{% static cell_53 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_63" id="cell_63_id">
+                        <img src="{% static cell_63 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_73" id="cell_73_id">
+                        <img src="{% static cell_73 %}" alt="" class="chess-board-piece">
+                    </div>  
+                    
+                    <div class="file_no file_no_d" id="file_no_d_id">d</div>
+                </div>
+                <div class="column-4 column">
+                    <div class="cell cell_04" id="cell_04_id">
+                        <img src="{% static cell_04 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_14" id="cell_14_id">
+                        <img src="{% static cell_14 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_24" id="cell_24_id">
+                        <img src="{% static cell_24 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_34" id="cell_34_id">
+                        <img src="{% static cell_34 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_44" id="cell_44_id">
+                        <img src="{% static cell_44 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_54" id="cell_54_id">
+                        <img src="{% static cell_54 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_64" id="cell_64_id">
+                        <img src="{% static cell_64 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_74" id="cell_74_id">
+                        <img src="{% static cell_74 %}" alt="" class="chess-board-piece">
+                    </div>                
+    
+                    <div class="file_no file_no_e" id="file_no_e_id">e</div>
+                </div>
+                <div class="column-5 column">
+                    <div class="cell cell_05" id="cell_05_id">
+                        <img src="{% static cell_05 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_15" id="cell_15_id">
+                        <img src="{% static cell_15 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_25" id="cell_25_id">
+                        <img src="{% static cell_25 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_35" id="cell_35_id">
+                        <img src="{% static cell_35 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_45" id="cell_45_id">
+                        <img src="{% static cell_45 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_55" id="cell_55_id">
+                        <img src="{% static cell_55 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_65" id="cell_65_id">
+                        <img src="{% static cell_65 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_75" id="cell_75_id">
+                        <img src="{% static cell_75 %}" alt="" class="chess-board-piece">
+                    </div>           
+                    
+                    <div class="file_no file_no_f" id="file_no_f_id">f</div>
+                </div>
+                <div class="column-6 column">
+                    <div class="cell cell_06" id="cell_06_id">
+                        <img src="{% static cell_06 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_16" id="cell_16_id">
+                        <img src="{% static cell_16 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_26" id="cell_26_id">
+                        <img src="{% static cell_26 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_36" id="cell_36_id">
+                        <img src="{% static cell_36 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_46" id="cell_46_id">
+                        <img src="{% static cell_46 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_56" id="cell_56_id">
+                        <img src="{% static cell_56 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_66" id="cell_66_id">
+                        <img src="{% static cell_66 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_76" id="cell_76_id">
+                        <img src="{% static cell_76 %}" alt="" class="chess-board-piece">
+                    </div>         
+                    
+                    <div class="file_no file_no_g" id="file_no_g_id">g</div>
+                </div>
+                <div class="column-7 column">
+                    <div class="cell cell_07" id="cell_07_id">
+                        <img src="{% static cell_07 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_17" id="cell_17_id">
+                        <img src="{% static cell_17 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_27" id="cell_27_id">
+                        <img src="{% static cell_27 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_37" id="cell_37_id">
+                        <img src="{% static cell_37 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_47" id="cell_47_id">
+                        <img src="{% static cell_47 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_57" id="cell_57_id">
+                        <img src="{% static cell_57 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_67" id="cell_67_id">
+                        <img src="{% static cell_67 %}" alt="" class="chess-board-piece">
+                    </div>
+                    <div class="cell cell_77" id="cell_77_id">
+                        <img src="{% static cell_77 %}" alt="" class="chess-board-piece">
+                    </div>  
+                    
+                    <div class="file_no file_no_h" id="file_no_h_id">h</div>              
+                </div>
+    
+                <div class="rank_numbers">
+                    <div class="rank_no rank_no_8" id="rank_no_8_id"> 8 </div>
+                    <div class="rank_no rank_no_7" id="rank_no_7_id"> 7 </div>
+                    <div class="rank_no rank_no_6" id="rank_no_6_id"> 6 </div>
+                    <div class="rank_no rank_no_5" id="rank_no_5_id"> 5 </div>
+                    <div class="rank_no rank_no_4" id="rank_no_4_id"> 4 </div>
+                    <div class="rank_no rank_no_3" id="rank_no_3_id"> 3 </div>
+                    <div class="rank_no rank_no_2" id="rank_no_2_id"> 2 </div>
+                    <div class="rank_no rank_no_1" id="rank_no_1_id"> 1 </div>
+                </div>
+            </div>
+    
+            <div class="captured_pieces_section captured_pieces_section_black_pieces captured_pieces_section_black_pieces_1">
+                {% for ele in bpc_1 %}
+                    <img class="capture_piece_img" src="{% static ele %}" alt="">
+                {% endfor %}
+            </div>
+            <div class="captured_pieces_section captured_pieces_section_black_pieces captured_pieces_section_black_pieces_2">
+                {% for ele in bpc_2 %}
+                    <img class="capture_piece_img" src="{% static ele %}" alt="">
+                {% endfor %}
+            </div>
+            <div class="value_captured_black">
+                +{{ value_black_captured }}
+            </div>
+        </div>
+
+        <div class="instrumentation-cluster board-master" id="instrumentation-cluster-id">
+            <div class="game-details" id="game-details-id">
+                <div class="card text-center">
+                    <div class="card-body">                
+                        {% if game.status_detailed == "Black Won" %}
+                        <h5 class="card-title"> <div id="game-name-main-id" style="display: inline;">{{ game.name }}</div> <button class="btn btn-dark game-name-edit-btn btn-sm" id="game-name-edit-btn-id">Edit</button> </h5>
+                        <h5><span class="badge bg-danger" id="game-id-main-id">{{ game.id }}</span> <span class="badge bg-warning">{{ game.status }}</span> <span class="badge bg-dark">Black Won</span> </h5>
+                        {% elif game.status_detailed == "White Won" %}
+                        <h5 class="card-title"> <div id="game-name-main-id" style="display: inline;">{{ game.name }}</div> <button class="btn btn-dark game-name-edit-btn btn-sm" id="game-name-edit-btn-id">Edit</button> </h5>
+                        <h5><span class="badge bg-danger" id="game-id-main-id">{{ game.id }}</span> <span class="badge bg-warning">{{ game.status }}</span> <span class="badge text-bg-light">White Won</span> </h5>                
+                        {% elif game.status_detailed == "Draw" %}
+                        <h5 class="card-title"> <div id="game-name-main-id" style="display: inline;">{{ game.name }}</div> <button class="btn btn-dark game-name-edit-btn btn-sm" id="game-name-edit-btn-id">Edit</button> </h5>
+                        <h5><span class="badge bg-danger" id="game-id-main-id">{{ game.id }}</span> <span class="badge bg-warning">{{ game.status }}</span> <span class="badge bg-secondary">Draw</span> </h5>
+                        {% else %}
+                        <h5 class="card-title"> <div id="game-name-main-id" style="display: inline;">{{ game.name }}</div> <button class="btn btn-dark game-name-edit-btn btn-sm" id="game-name-edit-btn-id">Edit</button> </h5>
+                        <h5><span class="badge bg-danger" id="game-id-main-id">{{ game.id }}</span> <span class="badge bg-warning">{{ game.status }}</span> </h5>
+                        {% endif %}
+                        <h6 class="card-title">{{ game.time }}</h6>
+                      </div>
+                </div>
+            </div>
+            
+            <div class="inner-instrumentation-cluster" id="inner-instrumentation-cluster-id">
+                <div class="button-cluster-instrument" id="button-cluster-instrument-id">
+                    <a href="{% url 'chessrook:home_page' %}" class="btn btn-danger quit-btn" id="quit-btn-id">Quit</a>
+                    <button type="button" class="btn btn-warning undo-btn" id="undo-btn-id">Undo</button>
+                    <button type="button" class="btn btn-light white-resign-btn" id="white-resign-btn-id">White Resign</button>
+                    <button type="button" class="btn btn-dark black-resign-btn" id="black-resign-btn-id">Black Resign</button>
+                </div>
+                <div class="move-table" id="move-table-id">
+                    <div class="moves-div-tag" id="moves-div-tag-id">
+                        <h1 style="text-align: center;"><span class="badge bg-secondary">MOVES</span></h1>
+                    </div>  
+                    
+                    <div class="white-and-black-moves" id="white-and-black-moves">
+                        <ul class="list-group white-group">
+                            {% for white_move in white_moves %}
+                                <li class="move-notation-item">{{ white_move }}</li>
+                            {% endfor %}                            
+                        </ul>
+    
+                        <ul class="list-group black-group">
+                            {% for black_move in black_moves %}
+                                <li class="move-notation-item">{{ black_move }}</li>
+                            {% endfor %} 
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="game-notes" id="game-notes">
+                <div class="card">
+                    <h5 class="card-header">Game Notes</h5>
+                    <div class="card-body">
+                      <p class="card-text game-notes-main" id="game-notes-main-id">{{ game.notes }}</p>
+                      <button class="btn btn-dark game-notes-edit-btn" id="game-notes-edit-btn-id">Edit</button>
+                    </div>
+                  </div>            
+            </div>
+        </div>
+
+        
+    </div>
+
+    
+    
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" value="register move" id="btnreg">
+    </form>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ game_edit_form.as_p }}
+        <input type="hidden" value="register game_edit" id="btngameedit">
+    </form>
+
+    <script src="{% static 'chessrook/js/jquery.js' %}"></script>
+    {% include "chessrook/ajax.html" %}
+    
+{% endblock content %}
